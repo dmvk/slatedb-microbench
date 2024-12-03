@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use object_store::{memory::InMemory, path::Path};
-use slatedb::config::{PutOptions, WriteOptions};
+use slatedb::config::{WriteOptions};
 use slatedb::{config::DbOptions, db::Db};
 use std::sync::Arc;
 use tokio::runtime::Runtime;
@@ -19,7 +19,6 @@ fn criterion_benchmark(c: &mut Criterion) {
             db.put_with_options(
                 key,
                 value,
-                &PutOptions::default(),
                 &WriteOptions {
                     await_durable: false,
                 },
@@ -31,7 +30,7 @@ fn criterion_benchmark(c: &mut Criterion) {
 
 criterion_group!{
     name = benches;
-    config = Criterion::default().nresamples(3).sample_size(10_000);
+    config = Criterion::default().sample_size(1_000);
     targets = criterion_benchmark
 }
 
